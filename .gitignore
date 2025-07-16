@@ -10,6 +10,10 @@
 /.next*/
 /out/
 
+# npm
+package.json
+package-lock.json
+
 # graphql code generation
 /.generated
 *.graphql.d.ts
@@ -31,3 +35,4 @@ scjssconfig.json
 
 # vercel
 .vercel
+
