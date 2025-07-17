@@ -2,17 +2,19 @@ import { Text, Field, withDatasourceCheck } from '@sitecore-jss/sitecore-jss-nex
 import { ComponentProps } from 'lib/component-props';
 import { JSX } from 'react';
 
-type TimerComponentProps = ComponentProps & {
+type TimerProps = ComponentProps & {
   fields: {
     heading: Field<string>;
   };
 };
 
-const TimerComponent = (props: TimerComponentProps): JSX.Element => (
+const Timer = (props: TimerProps): JSX.Element => (
   <div>
-    <p>TimerComponent Component</p>
+    <p>Timer Component</p>
     <Text field={props.fields.heading} />
   </div>
 );
 
-export default withDatasourceCheck()<TimerComponentProps>(TimerComponent);
+export default withDatasourceCheck()<TimerProps>(Timer);
+
+// write react component that displays current time
