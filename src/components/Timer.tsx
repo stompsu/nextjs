@@ -10,11 +10,10 @@ type TimerProps = ComponentProps & {
 
 const Timer = (props: TimerProps): JSX.Element => (
   <div>
-    <p>Timer Component</p>
-    <Text field={props.fields.heading} />
+    <p>Current date: {new Date().toDateString()}
+      <div><Text field={props.fields.heading} /></div>
+    </p>
   </div>
 );
 
 export default withDatasourceCheck()<TimerProps>(Timer);
-
-// write react component that displays current time
