@@ -31,7 +31,7 @@ const StyleguideLayout = (props: ComponentProps): JSX.Element => {
       const sectionRendering = getRendering(section);
       const sectionHeading = getFieldValue<string>(sectionRendering, 'heading');
       const sectionId = `i${convertUID(sectionRendering.uid)}`;
-      
+
       const children = getChildPlaceholder(sectionRendering, 'jss-styleguide-section')
         .filter((component) => getFieldValue(getRendering(component), 'heading'))
         .map((component) => {

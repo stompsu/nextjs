@@ -25,10 +25,11 @@ const Layout = ({ layoutData, headLinks }: LayoutProps): JSX.Element => {
   const fields = route?.fields as RouteFields;
 
   // Memoize head links to avoid recreating them on every render
-  const memoizedHeadLinks = useMemo(() => 
-    headLinks.map(headLink => (
-      <link rel={headLink.rel} key={headLink.href} href={headLink.href} />
-    )),
+  const memoizedHeadLinks = useMemo(
+    () =>
+      headLinks.map((headLink) => (
+        <link rel={headLink.rel} key={headLink.href} href={headLink.href} />
+      )),
     [headLinks]
   );
 
@@ -43,14 +44,7 @@ const Layout = ({ layoutData, headLinks }: LayoutProps): JSX.Element => {
 
       <Navigation />
       {/* root placeholder for the app, which we add components to using route data */}
-      <div className="container">
-        {route && (
-          <Placeholder
-            name="jss-main"
-            rendering={route}
-          />
-        )}
-      </div>
+      <div className="container">{route && <Placeholder name="jss-main" rendering={route} />}</div>
     </>
   );
 };

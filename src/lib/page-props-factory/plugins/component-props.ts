@@ -37,7 +37,9 @@ class ComponentPropsPlugin implements Plugin {
     for (const id of Object.keys(props.componentProps)) {
       const component = props.componentProps[id] as ComponentPropsError;
       if (component.error) {
-        errors.push(`\nUnable to get component props for ${component.componentName} (${id}): ${component.error}`);
+        errors.push(
+          `\nUnable to get component props for ${component.componentName} (${id}): ${component.error}`
+        );
       }
     }
 

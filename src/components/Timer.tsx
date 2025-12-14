@@ -19,8 +19,11 @@ const Timer = (props: TimerProps): JSX.Element => {
 
   return (
     <div>
-      <p>Current date: {currentDate}
-        <div><Text field={props.fields.heading} /></div>
+      <p>
+        Current date: {currentDate}
+        <div>
+          <Text field={props.fields.heading} />
+        </div>
       </p>
     </div>
   );
