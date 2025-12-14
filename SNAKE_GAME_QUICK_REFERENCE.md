@@ -185,7 +185,7 @@ npm run bootstrap
 ### Input Validation
 ```typescript
 // Always validate Sitecore field values
-const maxPoints = parseInt(value?.toString() || '50', 10);
+let maxPoints = parseInt(value?.toString() || '50', 10);
 if (isNaN(maxPoints) || maxPoints < 1) {
   maxPoints = 50; // Safe fallback
 }

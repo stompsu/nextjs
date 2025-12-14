@@ -94,6 +94,7 @@ export const useSnakeGame = (difficulty: string, maxPoints: number) => {
   const moveSnake = useCallback(() => {
     setGameState(prev => {
       if (prev.gameStatus !== 'playing') return prev;
+      if (!prev.snake.length) return prev; // Safety check for empty snake
 
       const head = prev.snake[0];
       let newHead: Position;
@@ -111,6 +112,8 @@ export const useSnakeGame = (difficulty: string, maxPoints: number) => {
         case 'RIGHT':
           newHead = { x: head.x + 1, y: head.y };
           break;
+        default:
+          return prev; // Handle unexpected direction
       }
 
       // Check collision
@@ -786,7 +789,7 @@ setGameState(prev => ({
 
 1. **Input Validation**: Validate Sitecore field values
    ```typescript
-   const maxPoints = parseInt(fields.maxPoints?.value?.toString() || '50', 10);
+   let maxPoints = parseInt(fields.maxPoints?.value?.toString() || '50', 10);
    if (isNaN(maxPoints) || maxPoints < 1) {
      maxPoints = 50; // Fallback
    }

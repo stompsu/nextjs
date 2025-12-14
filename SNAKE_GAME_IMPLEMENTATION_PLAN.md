@@ -44,7 +44,7 @@ type SnakeGameProps = ComponentProps & {
 ```
 
 #### 2. Game Hook: `useSnakeGame.ts`
-**Location**: `/src/components/hooks/useSnakeGame.ts`
+**Location**: `/src/components/SnakeGame/useSnakeGame.ts`
 
 **Responsibilities**:
 - Custom React hook to encapsulate game logic
@@ -142,13 +142,12 @@ export const DIFFICULTY_SETTINGS: Record<DifficultyLevel, DifficultyConfig> = {
 ```
 /src/components/
 ├── SnakeGame.tsx                      # Main component
-├── SnakeGame/
-│   ├── SnakeGameBoard.tsx            # Game board rendering
-│   ├── SnakeGameControls.tsx         # Game controls UI
-│   ├── types.ts                       # Type definitions
-│   └── styles.module.css             # Component styles
-└── hooks/
-    └── useSnakeGame.ts               # Game logic hook
+└── SnakeGame/
+    ├── useSnakeGame.ts               # Game logic hook
+    ├── SnakeGameBoard.tsx            # Game board rendering
+    ├── SnakeGameControls.tsx         # Game controls UI
+    ├── types.ts                       # Type definitions
+    └── styles.module.css             # Component styles
 
 /sitecore/definitions/components/
 └── SnakeGame.sitecore.ts             # Sitecore manifest definition
