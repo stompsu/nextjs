@@ -9,22 +9,14 @@ type TimerProps = ComponentProps & {
 };
 
 const Timer = (props: TimerProps): JSX.Element => {
-  // Use state to store the current date and only update it when component mounts
-  // Initialize with a static value to avoid hydration mismatch
-  const [currentDate, setCurrentDate] = useState<string>(() => {
-    // Check if we're on client side
-    if (typeof window !== 'undefined') {
-      return new Date().toDateString();
-    }
-    return '';
-  });
+  // Store the date in state and compute it once on mount
+  const [currentDate, setCurrentDate] = useState<string>('');
 
   useEffect(() => {
-    // Update the date on mount if it wasn't set during initialization
-    if (!currentDate) {
-      setCurrentDate(new Date().toDateString());
-    }
-  }, [currentDate]);
+    // Set the date once when component mounts on client side
+    // This avoids hydration mismatch and computes the date only once
+    setCurrentDate(new Date().toDateString());
+  }, []); // Empty dependency array ensures this runs only once
 
   return (
     <div>
