@@ -32,18 +32,17 @@ class ComponentPropsPlugin implements Plugin {
       });
     }
 
-    const errors = Object.keys(props.componentProps)
-      .map(id => {
-        const component = props.componentProps[id] as ComponentPropsError;
+    // Collect errors without creating intermediate empty strings
+    const errors: string[] = [];
+    for (const id of Object.keys(props.componentProps)) {
+      const component = props.componentProps[id] as ComponentPropsError;
+      if (component.error) {
+        errors.push(`\nUnable to get component props for ${component.componentName} (${id}): ${component.error}`);
+      }
+    }
 
-        return component.error
-          ? `\nUnable to get component props for ${component.componentName} (${id}): ${component.error}`
-          : '';
-      })
-      .join('');
-
-    if (errors.length) {
-      throw new Error(errors);
+    if (errors.length > 0) {
+      throw new Error(errors.join(''));
     }
 
     return props;

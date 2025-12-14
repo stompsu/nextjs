@@ -35,10 +35,17 @@ class StyleguideLayoutTabs extends React.Component<
     };
 
     this.setActiveTab = this.setActiveTab.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
   }
 
   setActiveTab(index: number) {
     this.setState({ activeTabIndex: index });
+  }
+
+  handleTabClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    const index = parseInt(event.currentTarget.dataset.index || '0', 10);
+    this.setActiveTab(index);
   }
 
   render() {
@@ -61,7 +68,8 @@ class StyleguideLayoutTabs extends React.Component<
                 <li className="nav-item" key={`tab${index}`}>
                   <a
                     className={`nav-link ${index === this.state.activeTabIndex ? 'active' : null}`}
-                    onClick={() => this.setActiveTab(index)}
+                    onClick={this.handleTabClick}
+                    data-index={index}
                     href="#t"
                   >
                     <Text field={(tab.props as TabProps).fields.title} />

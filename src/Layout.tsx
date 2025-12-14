@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { JSX, useMemo } from 'react';
 import Head from 'next/head';
 import { Placeholder, LayoutServiceData, Field, HTMLLink } from '@sitecore-jss/sitecore-jss-nextjs';
 import config from 'temp/config';
@@ -24,15 +24,21 @@ const Layout = ({ layoutData, headLinks }: LayoutProps): JSX.Element => {
 
   const fields = route?.fields as RouteFields;
 
+  // Memoize head links to avoid recreating them on every render
+  const memoizedHeadLinks = useMemo(() => 
+    headLinks.map(headLink => (
+      <link rel={headLink.rel} key={headLink.href} href={headLink.href} />
+    )),
+    [headLinks]
+  );
+
   return (
     <>
       <Scripts />
       <Head>
         <title>{fields.pageTitle.value.toString() || 'Page'}</title>
         <link rel="icon" href={`${publicUrl}/favicon.ico`} />
-        {headLinks.map(headLink => (
-          <link rel={headLink.rel} key={headLink.href} href={headLink.href} />
-        ))}
+        {memoizedHeadLinks}
       </Head>
 
       <Navigation />
