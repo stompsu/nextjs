@@ -24,37 +24,44 @@ const StyleguideLayout = (props: ComponentProps): JSX.Element => {
 
   // this code reads the components in the child placeholders of this component,
   // and projects them into the left navigation column for the styleguide
+  // Optimized to use a single iteration instead of chained map operations
   const sections = getChildPlaceholder(props.rendering, 'jss-styleguide-layout')
     .filter((section) => getFieldValue(getRendering(section), 'heading'))
-    .map((section) => ({
-      heading: getFieldValue<string>(getRendering(section), 'heading'),
-      id: `i${convertUID(getRendering(section).uid)}`,
-      children: getChildPlaceholder(getRendering(section), 'jss-styleguide-section')
+    .map((section) => {
+      const sectionRendering = getRendering(section);
+      const sectionHeading = getFieldValue<string>(sectionRendering, 'heading');
+      const sectionId = `i${convertUID(sectionRendering.uid)}`;
+
+      const children = getChildPlaceholder(sectionRendering, 'jss-styleguide-section')
         .filter((component) => getFieldValue(getRendering(component), 'heading'))
-        .map((component) => ({
-          heading: getFieldValue<string>(getRendering(component), 'heading'),
-          id: `i${convertUID(getRendering(component).uid)}`,
-        })),
-    }))
-    .map((section) => (
-      <nav key={section.heading} className="nav flex-column pt-2">
-        <a href={`#${section.id}`} className="nav-item fw-bold">
-          {section.heading}
-        </a>
-        {section.children && (
-          <nav className="nav flex-column">
-            {section.children.map(
-              (child) =>
-                child.heading && (
-                  <a key={child.id} href={`#${child.id}`}>
-                    {child.heading}
-                  </a>
-                )
-            )}
-          </nav>
-        )}
-      </nav>
-    ));
+        .map((component) => {
+          const componentRendering = getRendering(component);
+          return {
+            heading: getFieldValue<string>(componentRendering, 'heading'),
+            id: `i${convertUID(componentRendering.uid)}`,
+          };
+        });
+
+      return (
+        <nav key={sectionHeading} className="nav flex-column pt-2">
+          <a href={`#${sectionId}`} className="nav-item fw-bold">
+            {sectionHeading}
+          </a>
+          {children.length > 0 && (
+            <nav className="nav flex-column">
+              {children.map(
+                (child) =>
+                  child.heading && (
+                    <a key={child.id} href={`#${child.id}`}>
+                      {child.heading}
+                    </a>
+                  )
+              )}
+            </nav>
+          )}
+        </nav>
+      );
+    });
 
   return (
     <div className="row">

@@ -14,6 +14,18 @@ import ConnectedDemoQuery from './GraphQL-ConnectedDemo.dynamic.graphql';
 import { ComponentProps } from 'lib/component-props';
 import config from 'temp/config';
 
+// Create a shared GraphQL client instance to avoid recreating it on every request
+let graphQLClient: GraphQLRequestClient | null = null;
+
+const getGraphQLClient = (): GraphQLRequestClient => {
+  if (!graphQLClient) {
+    graphQLClient = new GraphQLRequestClient(config.graphQLEndpoint, {
+      apiKey: config.sitecoreApiKey,
+    });
+  }
+  return graphQLClient;
+};
+
 type GraphQLConnectedDemoDataSource = {
   sample1: {
     jsonValue: {
@@ -152,11 +164,9 @@ export const getStaticProps: GetStaticComponentProps = async (rendering, layoutD
     return null;
   }
 
-  const graphQLClient = new GraphQLRequestClient(config.graphQLEndpoint, {
-    apiKey: config.sitecoreApiKey,
-  });
+  const client = getGraphQLClient();
 
-  const result = await graphQLClient.request<GraphQLConnectedDemoData>(
+  const result = await client.request<GraphQLConnectedDemoData>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ConnectedDemoQuery,
     {
@@ -180,11 +190,9 @@ export const getServerSideProps: GetServerSideComponentProps = async (rendering,
     return null;
   }
 
-  const graphQLClient = new GraphQLRequestClient(config.graphQLEndpoint, {
-    apiKey: config.sitecoreApiKey,
-  });
+  const client = getGraphQLClient();
 
-  const result = await graphQLClient.request<GraphQLConnectedDemoData>(
+  const result = await client.request<GraphQLConnectedDemoData>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ConnectedDemoQuery,
     {

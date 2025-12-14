@@ -27,6 +27,8 @@ class StyleguideLayoutTabs extends React.Component<
   StyleguideLayoutTabsProps,
   StyleguideLayoutTabsState
 > {
+  private tabClickHandlers: Map<number, (event: React.MouseEvent<HTMLAnchorElement>) => void>;
+
   constructor(props: StyleguideLayoutTabsProps) {
     super(props);
 
@@ -34,11 +36,22 @@ class StyleguideLayoutTabs extends React.Component<
       activeTabIndex: 0,
     };
 
+    this.tabClickHandlers = new Map();
     this.setActiveTab = this.setActiveTab.bind(this);
   }
 
   setActiveTab(index: number) {
     this.setState({ activeTabIndex: index });
+  }
+
+  getTabClickHandler(index: number): (event: React.MouseEvent<HTMLAnchorElement>) => void {
+    if (!this.tabClickHandlers.has(index)) {
+      this.tabClickHandlers.set(index, (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        this.setActiveTab(index);
+      });
+    }
+    return this.tabClickHandlers.get(index)!;
   }
 
   render() {
@@ -61,7 +74,7 @@ class StyleguideLayoutTabs extends React.Component<
                 <li className="nav-item" key={`tab${index}`}>
                   <a
                     className={`nav-link ${index === this.state.activeTabIndex ? 'active' : null}`}
-                    onClick={() => this.setActiveTab(index)}
+                    onClick={this.getTabClickHandler(index)}
                     href="#t"
                   >
                     <Text field={(tab.props as TabProps).fields.title} />
