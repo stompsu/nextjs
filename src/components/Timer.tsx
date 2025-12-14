@@ -10,12 +10,21 @@ type TimerProps = ComponentProps & {
 
 const Timer = (props: TimerProps): JSX.Element => {
   // Use state to store the current date and only update it when component mounts
-  const [currentDate, setCurrentDate] = useState<string>('');
+  // Initialize with a static value to avoid hydration mismatch
+  const [currentDate, setCurrentDate] = useState<string>(() => {
+    // Check if we're on client side
+    if (typeof window !== 'undefined') {
+      return new Date().toDateString();
+    }
+    return '';
+  });
 
   useEffect(() => {
-    // Set the date on mount (client-side only to avoid SSR hydration mismatch)
-    setCurrentDate(new Date().toDateString());
-  }, []);
+    // Update the date on mount if it wasn't set during initialization
+    if (!currentDate) {
+      setCurrentDate(new Date().toDateString());
+    }
+  }, [currentDate]);
 
   return (
     <div>
